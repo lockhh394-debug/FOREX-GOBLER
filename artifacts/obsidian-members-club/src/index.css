@@ -197,5 +197,6 @@ section {
 .dashboard-stat strong { color: var(--paper); font-size: .9rem; font-weight: 500; }
 
 @media (min-width: 1024px) {
+  .member-layout { display: grid; grid-template-columns: 240px minmax(0, 1fr); align-items: start; }
   .member-rail { min-height: calc(100dvh - 72px); }
 }
