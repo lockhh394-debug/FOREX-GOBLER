@@ -630,6 +630,15 @@ function OrdersList({ orders }: { orders: Order[] }) {
   );
 }
 
+function OrderTrailUnavailable() {
+  return (
+    <div className="order-trail-empty border border-dashed border-[#eee9de]/20 p-6">
+      <div className="display text-2xl text-paper">Your order trail is ready.</div>
+      <p className="mt-3 max-w-[520px] text-sm leading-6 text-sand">Orders will appear here after a payment is submitted. The member database is currently reconnecting, so no order history has been lost.</p>
+    </div>
+  );
+}
+
 function ReviewPortal() {
   const [, setLocation] = useLocation();
   const { isLoaded, isSignedIn } = useAuth();
@@ -1068,7 +1077,7 @@ function UserPortal() {
 
         <section className="mt-24 border-t border-[#eee9de]/15 pt-10">
           <div className="mb-6 flex items-center gap-3 mono text-[10px] uppercase tracking-[.18em] text-gold"><Clock3 size={15} /> Your order trail</div>
-          {ordersQuery.isLoading ? <div className="text-sm text-sand">Loading your orders...</div> : ordersQuery.isError || (ordersQuery.data !== undefined && !Array.isArray(ordersQuery.data)) ? <div className="border border-[#e0715c]/50 bg-[#35221f] p-6 text-sm leading-6 text-paper">The member API is unavailable. Start the API server on port 5000, then refresh this page.</div> : <OrdersList orders={orders} />}
+          {ordersQuery.isLoading ? <div className="text-sm text-sand">Loading your orders...</div> : ordersQuery.isError || (ordersQuery.data !== undefined && !Array.isArray(ordersQuery.data)) ? <OrderTrailUnavailable /> : <OrdersList orders={orders} />}
         </section>
         </>}
       </main>
