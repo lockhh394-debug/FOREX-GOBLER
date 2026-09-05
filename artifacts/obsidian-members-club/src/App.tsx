@@ -875,17 +875,9 @@ function UserPortal() {
 
   const chooseProduct = async (product: Product) => {
     setError("");
-    setBusy(true);
-    try {
-      const order = await createOrder.mutateAsync({ data: { productSlug: product.slug } });
-      setSelectedProduct(product);
-      setActiveOrder(order);
-      setStep("payment");
-    } catch {
-      setError("The bot catalog is visible, but checkout is offline. Start the API and database, then try again.");
-    } finally {
-      setBusy(false);
-    }
+    setSelectedProduct(product);
+    setActiveOrder(null);
+    setStep("payment");
   };
 
   const copyAddress = async () => {
@@ -900,13 +892,15 @@ function UserPortal() {
 
   const submitProof = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    if (!proofFile || !selectedProduct || !activeOrder) {
+    if (!proofFile || !selectedProduct) {
       setError("Attach the payment screenshot before submitting.");
       return;
     }
     setError("");
     setBusy(true);
     try {
+      const order = activeOrder ?? await createOrder.mutateAsync({ data: { productSlug: selectedProduct.slug } });
+      setActiveOrder(order);
       const upload = await requestUploadUrl.mutateAsync({
         data: {
           name: proofFile.name,
@@ -921,7 +915,7 @@ function UserPortal() {
       });
       if (!uploaded.ok) throw new Error("Upload failed");
       const updated = await submitPaymentProof.mutateAsync({
-        id: activeOrder.id,
+        id: order.id,
         data: {
           network: selectedProduct.paymentNetwork,
           amountCents: selectedProduct.priceCents,
@@ -1004,11 +998,11 @@ function UserPortal() {
           </section>
         )}
 
-        {step === "payment" && selectedProduct && activeOrder && (
+        {step === "payment" && selectedProduct && (
           <section className="mt-14 grid gap-8 lg:grid-cols-[.86fr_1.14fr]">
             <div className="border border-[#eee9de]/15 bg-[#211d18] p-7 md:p-9">
               <button type="button" onClick={() => setStep("catalog")} className="mono text-[9px] uppercase tracking-[.14em] text-sand hover:text-gold">â† Back to systems</button>
-              <div className="mt-12 mono text-[10px] uppercase tracking-[.18em] text-gold">Order #{activeOrder.id}</div>
+              <div className="mt-12 mono text-[10px] uppercase tracking-[.18em] text-gold">{activeOrder ? `Order #${activeOrder.id}` : "Payment setup"}</div>
               <h2 className="display mt-5 text-5xl leading-[.9] tracking-[-.06em] text-paper">{selectedProduct.name}</h2>
               <div className="mt-8 flex items-end justify-between border-t border-[#eee9de]/10 pt-5">
                 <span className="mono text-[10px] uppercase text-sand">Amount due</span>
