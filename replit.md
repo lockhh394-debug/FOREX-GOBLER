@@ -32,6 +32,10 @@ The frontend uses `/api` for the generated client. In a deployed Replit applicat
 3. At the domain registrar, add the DNS records Replit provides. Do not guess the record values; Replit supplies the exact target and verification record.
 4. Wait for DNS and TLS verification, then test `https://forexgobler.net/` and the sign-in flow.
 
+### Clerk privacy and branding
+
+The app-facing auth copy is branded Forex Gobler. In the Clerk dashboard, set the application name and email branding to Forex Gobler, configure a verified sending domain if you have one, and use production keys for the live deployment. Clerk controls verification-email templates and provider metadata; those settings cannot be changed from frontend JSX. Do not place secret keys or raw identity data in the frontend environment.
+
 ## Stack
 
 - pnpm workspaces, Node.js 24, TypeScript 5.9

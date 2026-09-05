@@ -33,11 +33,14 @@ import {
   Copy,
   Loader2,
   LogOut,
+  LayoutDashboard,
   Menu,
   MoveUpRight,
+  FileCheck2,
   ShieldCheck,
   TriangleAlert,
   UploadCloud,
+  UserRound,
   Wallet,
   X,
 } from "lucide-react";
@@ -175,7 +178,7 @@ function Home() {
               O
             </span>
             <span className="display text-[13px] font-bold tracking-[.16em] text-paper">
-              OBSIDIAN<span className="text-gold">/</span>MC
+              FOREX<span className="text-gold">/</span>GOBLER
             </span>
           </button>
           <nav className="hidden items-center gap-8 md:flex">
@@ -303,8 +306,8 @@ function Home() {
             </div>
             <div className="reveal flex flex-col justify-end">
               <p className="max-w-[450px] text-base leading-8 text-[#3a3329]">
-                Most people do not need more information. They need a room
-                that makes their old standards feel embarrassing.
+                Most people do not need more information. They need a system for
+                the moments when emotion, distraction, and impulse take the wheel.
               </p>
               <button
                 type="button"
@@ -437,7 +440,7 @@ function Home() {
 
       <footer className="mx-auto flex max-w-[1320px] flex-col justify-between gap-8 px-5 py-10 md:flex-row md:items-end md:px-10">
         <div>
-          <div className="display text-lg font-bold tracking-[.12em]">OBSIDIAN<span className="text-gold">/</span>MC</div>
+          <div className="display text-lg font-bold tracking-[.12em]">FOREX<span className="text-gold">/</span>GOBLER</div>
           <div className="mono mt-3 text-[9px] uppercase text-sand">A members club for the relentlessly unfinished</div>
         </div>
         <div className="flex gap-7 mono text-[9px] uppercase text-sand">
@@ -629,7 +632,7 @@ function ReviewPortal() {
         <div className="mx-auto flex h-[72px] max-w-[1320px] items-center justify-between px-5 md:px-10">
           <button type="button" onClick={() => setLocation("/user-portal")} className="group flex items-center gap-3">
             <span className="display flex h-8 w-8 items-center justify-center border border-[#efb84f] text-sm font-bold text-gold">O</span>
-            <span className="display text-[13px] font-bold tracking-[.16em] text-paper">OBSIDIAN<span className="text-gold">/</span>MC</span>
+            <span className="display text-[13px] font-bold tracking-[.16em] text-paper">FOREX<span className="text-gold">/</span>GOBLER</span>
           </button>
           <span className="mono text-[9px] uppercase tracking-[.14em] text-gold">Reviewer console</span>
         </div>
@@ -641,7 +644,7 @@ function ReviewPortal() {
         {error && <div className="mt-8 flex items-center gap-3 border border-[#e0715c]/60 bg-[#35221f] px-4 py-3 text-sm text-paper"><AlertCircle size={17} className="text-[#e0715c]" /> {error}</div>}
         {reviewQuery.isError ? (
           <div className="mt-14 border border-[#e0715c]/50 bg-[#35221f] p-7 text-sm leading-6 text-paper">
-            Reviewer access is not enabled for this account. Add the authorized Clerk user ID to <span className="mono text-gold">ADMIN_USER_IDS</span> before using this console.
+            Reviewer access is not enabled for this account. Add the authorized reviewer account ID to <span className="mono text-gold">ADMIN_USER_IDS</span> before using this console.
           </div>
         ) : reviewQuery.isLoading ? (
           <div className="mt-14 flex items-center gap-3 text-sm text-sand"><Loader2 className="animate-spin text-gold" /> Loading pending proofs...</div>
@@ -679,11 +682,76 @@ function ReviewPortal() {
   );
 }
 
+type PortalTab = "dashboard" | "profile" | "kyc";
+
+function MemberRail({
+  tab,
+  setTab,
+  user,
+  signOut,
+}: {
+  tab: PortalTab;
+  setTab: (tab: PortalTab) => void;
+  user: ReturnType<typeof useUser>["user"];
+  signOut: () => void;
+}) {
+  const initials = user?.firstName?.[0] ?? user?.primaryEmailAddress?.emailAddress?.[0] ?? "F";
+  return (
+    <aside className="member-rail border-r border-[#eee9de]/10 bg-[#211d18] p-5 lg:sticky lg:top-[72px] lg:h-[calc(100dvh-72px)]">
+      <div className="flex items-center gap-3 border-b border-[#eee9de]/10 pb-5">
+        <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[#d6a447] font-bold text-[#171411]">{initials.toUpperCase()}</div>
+        <div className="min-w-0">
+          <div className="truncate text-sm text-paper">{user?.firstName || "Forex member"}</div>
+          <div className="truncate text-[11px] text-sand">{user?.primaryEmailAddress?.emailAddress || "Private account"}</div>
+        </div>
+      </div>
+      <nav className="mt-6 space-y-2" aria-label="Member navigation">
+        <button type="button" onClick={() => setTab("dashboard")} className={`member-rail-link ${tab === "dashboard" ? "is-active" : ""}`}><LayoutDashboard size={16} /> Dashboard</button>
+        <button type="button" onClick={() => setTab("profile")} className={`member-rail-link ${tab === "profile" ? "is-active" : ""}`}><UserRound size={16} /> Profile</button>
+        <button type="button" onClick={() => setTab("kyc")} className={`member-rail-link ${tab === "kyc" ? "is-active" : ""}`}><FileCheck2 size={16} /> KYC & security</button>
+      </nav>
+      <div className="mt-auto hidden border-t border-[#eee9de]/10 pt-5 lg:block">
+        <button type="button" onClick={signOut} className="member-rail-link"><LogOut size={16} /> Sign out</button>
+      </div>
+    </aside>
+  );
+}
+
+function ProfilePanel({ user }: { user: ReturnType<typeof useUser>["user"] }) {
+  return (
+    <section className="portal-panel max-w-[760px]">
+      <div className="mono text-[10px] uppercase tracking-[.2em] text-gold">Your identity</div>
+      <h1 className="display mt-6 text-5xl leading-[.9] tracking-[-.06em] text-paper">PROFILE.</h1>
+      <p className="mt-5 max-w-[520px] text-sm leading-7 text-sand">Keep the account attached to the person making the move. Your order history stays private to this account.</p>
+      <div className="mt-10 grid gap-4 sm:grid-cols-2">
+        <div className="profile-field"><span>First name</span><strong>{user?.firstName || "Not set"}</strong></div>
+        <div className="profile-field"><span>Last name</span><strong>{user?.lastName || "Not set"}</strong></div>
+        <div className="profile-field sm:col-span-2"><span>Account email</span><strong>{user?.primaryEmailAddress?.emailAddress || "Private"}</strong></div>
+      </div>
+    </section>
+  );
+}
+
+function KycPanel() {
+  return (
+    <section className="portal-panel max-w-[760px]">
+      <div className="mono text-[10px] uppercase tracking-[.2em] text-gold">Trust & safety</div>
+      <h1 className="display mt-6 text-5xl leading-[.9] tracking-[-.06em] text-paper">KYC & SECURITY.</h1>
+      <p className="mt-5 max-w-[560px] text-sm leading-7 text-sand">Verification is handled privately when it is required for your order. We do not display sensitive identity documents in the member feed.</p>
+      <div className="mt-10 border border-[#7fac84]/40 bg-[#203329] p-6">
+        <div className="flex items-center gap-3 text-[#a9d4ad]"><ShieldCheck size={20} /> <span className="mono text-[10px] uppercase tracking-[.16em]">Account security active</span></div>
+        <p className="mt-4 text-sm leading-6 text-[#c9dfcb]">Email verification protects access to your account. Payment proof is only available inside an authenticated order flow.</p>
+      </div>
+      <div className="mt-4 border border-[#eee9de]/15 p-6 text-sm leading-6 text-sand">No identity document is requested on this screen. A review request, when needed, will appear here with a clear explanation before anything is submitted.</div>
+    </section>
+  );
+}
+
 function UserPortal() {
   const [, setLocation] = useLocation();
   const { isLoaded, isSignedIn } = useAuth();
   const { user } = useUser();
-  const { signOut } = useClerk();
+  const { signOut: signOutUser } = useClerk();
   const queryClient = useQueryClient();
   const { data: products = [], isLoading: productsLoading } = useListProducts();
   const ordersQuery = useListOrders({
@@ -703,6 +771,7 @@ function UserPortal() {
   const [copied, setCopied] = useState(false);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
+  const [portalTab, setPortalTab] = useState<PortalTab>("dashboard");
 
   const existingPendingOrder = useMemo(
     () => ordersQuery.data?.find((order) => order.status === "payment_verification_pending"),
@@ -790,26 +859,31 @@ function UserPortal() {
     }
   };
 
+  const handleSignOut = () => { void signOutUser({ redirectUrl: basePath || "/" }); };
+
   return (
     <div className="obsidian-app grain min-h-[100dvh] text-center">
       <header className="nav-shell sticky left-0 right-0 top-0 z-40">
         <div className="mx-auto flex h-[72px] max-w-[1320px] items-center justify-between px-5 md:px-10">
           <button type="button" onClick={() => setLocation("/")} className="group flex items-center gap-3">
             <span className="display flex h-8 w-8 items-center justify-center border border-[#efb84f] text-sm font-bold text-gold">O</span>
-            <span className="display text-[13px] font-bold tracking-[.16em] text-paper">OBSIDIAN<span className="text-gold">/</span>MC</span>
+            <span className="display text-[13px] font-bold tracking-[.16em] text-paper">FOREX<span className="text-gold">/</span>GOBLER</span>
           </button>
           <div className="flex items-center gap-4">
             <span className="hidden mono text-[9px] uppercase tracking-[.14em] text-sand sm:block">
               {user?.firstName ? `Welcome, ${user.firstName}` : "Member portal"}
             </span>
-            <button type="button" onClick={() => signOut({ redirectUrl: basePath || "/" })} className="flex items-center gap-2 border border-[#eee9de]/20 px-3 py-2 mono text-[9px] uppercase text-sand hover:text-gold" data-testid="button-logout">
+            <button type="button" onClick={handleSignOut} className="flex items-center gap-2 border border-[#eee9de]/20 px-3 py-2 mono text-[9px] uppercase text-sand hover:text-gold" data-testid="button-logout">
               <LogOut size={13} /> Sign out
             </button>
           </div>
         </div>
       </header>
 
-      <main className="mx-auto max-w-[1320px] px-5 py-16 md:px-10 md:py-24">
+      <div className="member-layout mx-auto max-w-[1440px] lg:grid lg:grid-cols-[240px_1fr]">
+        <MemberRail tab={portalTab} setTab={setPortalTab} user={user} signOut={handleSignOut} />
+      <main className="mx-auto w-full max-w-[1200px] px-5 py-16 md:px-10 md:py-24">
+        {portalTab === "profile" ? <ProfilePanel user={user} /> : portalTab === "kyc" ? <KycPanel /> : <>
         <div className="reveal">
           <div className="mono text-[10px] uppercase tracking-[.2em] text-gold">Member portal / Forex Gobler</div>
           <h1 className="display mt-7 max-w-[880px] text-[clamp(56px,8vw,116px)] font-semibold leading-[.84] tracking-[-.08em] text-paper">
@@ -819,7 +893,8 @@ function UserPortal() {
           </h1>
           <p className="mt-8 max-w-[510px] text-base leading-7 text-sand">
             Three levels of control. One private order trail. Choose the EA,
-            complete the USDT-TRC20 payment, and attach your proof.
+            complete the USDT-TRC20 payment, and attach your proof. Payment
+            tools appear only after your account is authenticated.
           </p>
         </div>
 
@@ -915,7 +990,9 @@ function UserPortal() {
           <div className="mb-6 flex items-center gap-3 mono text-[10px] uppercase tracking-[.18em] text-gold"><Clock3 size={15} /> Your order trail</div>
           {ordersQuery.isLoading ? <div className="text-sm text-sand">Loading your orders...</div> : <OrdersList orders={ordersQuery.data ?? []} />}
         </section>
+        </>}
       </main>
+      </div>
     </div>
   );
 }
@@ -929,7 +1006,11 @@ function HomeRedirect() {
 function SignInPage() {
   return (
     <div className="auth-page flex min-h-[100dvh] items-center justify-center px-4">
-      <SignIn routing="path" path={`${basePath}/sign-in`} signUpUrl={`${basePath}/sign-up`} />
+      <div className="auth-frame">
+        <div className="auth-brand display">FOREX<span className="text-gold">/</span>GOBLER</div>
+        <div className="auth-private-note">Private member access. Verification codes are used only to protect your account.</div>
+        <SignIn routing="path" path={`${basePath}/sign-in`} signUpUrl={`${basePath}/sign-up`} />
+      </div>
     </div>
   );
 }
@@ -937,7 +1018,11 @@ function SignInPage() {
 function SignUpPage() {
   return (
     <div className="auth-page flex min-h-[100dvh] items-center justify-center px-4">
-      <SignUp routing="path" path={`${basePath}/sign-up`} signInUrl={`${basePath}/sign-in`} />
+      <div className="auth-frame">
+        <div className="auth-brand display">FOREX<span className="text-gold">/</span>GOBLER</div>
+        <div className="auth-private-note">Create your private member account. Payment tools unlock only after sign-in.</div>
+        <SignUp routing="path" path={`${basePath}/sign-up`} signInUrl={`${basePath}/sign-in`} />
+      </div>
     </div>
   );
 }
@@ -956,8 +1041,8 @@ function ClerkProviderWithRoutes() {
       signInUrl={`${basePath}/sign-in`}
       signUpUrl={`${basePath}/sign-up`}
       localization={{
-        signIn: { start: { title: "Welcome back", subtitle: "Sign in to access your orders" } },
-        signUp: { start: { title: "Create your account", subtitle: "Start your Forex Gobler order" } },
+        signIn: { start: { title: "Welcome back to Forex Gobler", subtitle: "Sign in to access your private member portal" } },
+        signUp: { start: { title: "Join Forex Gobler", subtitle: "Create your private member account" } },
       }}
       routerPush={(to) => setLocation(stripBase(to))}
       routerReplace={(to) => setLocation(stripBase(to), { replace: true })}
