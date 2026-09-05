@@ -25,6 +25,13 @@ Run the frontend with `PORT=5174 pnpm --filter @workspace/obsidian-members-club 
 
 The frontend uses `/api` for the generated client. In a deployed Replit application, configure the frontend and API under the same application/router so Clerk cookies and API requests share the host.
 
+### Custom domain: forexgobler.net
+
+1. Deploy the Replit application and confirm the generated Replit URL works first.
+2. In Replit deployment settings, choose **Custom domain** and add `forexgobler.net` (and `www.forexgobler.net` if desired).
+3. At the domain registrar, add the DNS records Replit provides. Do not guess the record values; Replit supplies the exact target and verification record.
+4. Wait for DNS and TLS verification, then test `https://forexgobler.net/` and the sign-in flow.
+
 ## Stack
 
 - pnpm workspaces, Node.js 24, TypeScript 5.9
