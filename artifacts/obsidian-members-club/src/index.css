@@ -180,6 +180,8 @@ section {
 
 .member-layout { text-align: left; }
 .portal-main { min-height: calc(100dvh - 72px); }
+.portal-hero { opacity: 1; transform: none; }
+.portal-header-actions { gap: 1.5rem; }
 .member-rail { min-height: 220px; transition: width .25s ease, padding .25s ease; }
 .member-rail-toggle { display: inline-flex; flex: 0 0 auto; align-items: center; justify-content: center; border: 1px solid rgba(238,233,222,.18); padding: .4rem; color: var(--sand); }
 .member-rail-toggle:hover { border-color: var(--gold); color: var(--gold); }

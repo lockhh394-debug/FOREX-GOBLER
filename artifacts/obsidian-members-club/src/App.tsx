@@ -949,7 +949,7 @@ function UserPortal() {
             <span className="display flex h-8 w-8 items-center justify-center border border-[#efb84f] text-sm font-bold text-gold">O</span>
             <span className="display text-[13px] font-bold tracking-[.16em] text-paper">FOREX<span className="text-gold">/</span>GOBLER</span>
           </button>
-          <div className="flex items-center gap-6">
+          <div className="portal-header-actions flex items-center gap-6">
             <span className="hidden mono text-[9px] uppercase tracking-[.14em] text-sand sm:block">
               {user?.firstName ? `Welcome, ${user.firstName}` : "Member portal"}
             </span>
@@ -964,7 +964,7 @@ function UserPortal() {
         <MemberRail tab={portalTab} setTab={setPortalTab} user={user} signOut={handleSignOut} collapsed={railCollapsed} setCollapsed={setRailCollapsed} />
       <main className="portal-main mx-auto w-full max-w-[1200px] px-5 py-16 md:px-10 md:py-24">
         {portalTab === "community" ? <CommunityPanel /> : portalTab === "profile" ? <ProfilePanel user={user} /> : portalTab === "kyc" ? <KycPanel /> : <>
-        <div className="reveal">
+        <div className="portal-hero">
           <div className="mono text-[10px] uppercase tracking-[.2em] text-gold">Dashboard / Forex Gobler</div>
           <h1 className="display mt-7 max-w-[880px] text-[clamp(56px,8vw,116px)] font-semibold leading-[.84] tracking-[-.08em] text-paper">
             YOUR MEMBER
