@@ -27,14 +27,15 @@ The frontend uses `/api` for the generated client. In a deployed Replit applicat
 
 ### Deploy from VS Code
 
-Use a Node/PostgreSQL host such as Render, Railway, Fly.io, or a VPS. Deploy the API as a Node service with `pnpm --filter @workspace/api-server build` followed by `pnpm --filter @workspace/api-server start`, and deploy the frontend as a Vite static site with `pnpm --filter @workspace/obsidian-members-club build` serving `artifacts/obsidian-members-club/dist/public`. Set `DATABASE_URL`, Clerk keys, object-storage values, `ADMIN_USER_IDS`, and the email variables in the host's secret manager. Route `/api/*` to the API service and the remaining paths to the frontend; then point `forexgobler.com` or `forexgobler.net` DNS to that host and enable HTTPS.
+Use iFreeDomains only if your plan supports Node.js services, PostgreSQL, environment secrets, and HTTPS. Deploy the API as a Node service with `pnpm --filter @workspace/api-server build` followed by `pnpm --filter @workspace/api-server start`, and deploy the frontend as a Vite static site with `pnpm --filter @workspace/obsidian-members-club build` serving `artifacts/obsidian-members-club/dist/public`. Set `DATABASE_URL`, Clerk keys, object-storage values, `ADMIN_USER_IDS`, and the email variables in the host's secret manager. Route `/api/*` to the API service and the remaining paths to the frontend, then point `forexgobler.com` DNS to that host and enable HTTPS.
 
-### Custom domain: forexgobler.net
+### Custom domain: forexgobler.com via iFreeDomains
 
-1. Deploy the Replit application and confirm the generated Replit URL works first.
-2. In Replit deployment settings, choose **Custom domain** and add `forexgobler.net` (and `www.forexgobler.net` if desired).
-3. At the domain registrar, add the DNS records Replit provides. Do not guess the record values; Replit supplies the exact target and verification record.
-4. Wait for DNS and TLS verification, then test `https://forexgobler.net/` and the sign-in flow.
+1. Confirm `forexgobler.com` is registered in your iFreeDomains account.
+2. Deploy the frontend and API to a host that supports this full-stack workspace, or use Replit for the deployment runtime.
+3. In the deployment host's custom-domain settings, add `forexgobler.com` and `www.forexgobler.com` if desired.
+4. In iFreeDomains DNS management, add exactly the A/CNAME records provided by the deployment host. Do not guess the target values.
+5. Wait for DNS and TLS verification, then test `https://forexgobler.com/`, sign-in, dashboard, and checkout.
 
 ### Clerk privacy and branding
 
