@@ -1083,8 +1083,14 @@ function ClerkProviderWithRoutes() {
       signInUrl={`${basePath}/sign-in`}
       signUpUrl={`${basePath}/sign-up`}
       localization={{
-        signIn: { start: { title: "Welcome back to Forex Gobler", subtitle: "Sign in to access your private member portal" } },
-        signUp: { start: { title: "Join Forex Gobler", subtitle: "Create your private member account" } },
+        signIn: {
+          start: { title: "Welcome back to Forex Gobler", subtitle: "Sign in to access your private member portal" },
+          emailCode: { title: "Verify your access", subtitle: "Enter the private code to continue", formTitle: "Verification code", resendButton: "Request a new code" },
+        },
+        signUp: {
+          start: { title: "Join Forex Gobler", subtitle: "Create your private member account" },
+          emailCode: { title: "Secure your account", subtitle: "Enter the private code to continue", formTitle: "Verification code", resendButton: "Request a new code" },
+        },
       }}
       routerPush={(to) => setLocation(stripBase(to))}
       routerReplace={(to) => setLocation(stripBase(to), { replace: true })}
