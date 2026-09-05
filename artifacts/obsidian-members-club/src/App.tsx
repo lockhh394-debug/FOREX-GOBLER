@@ -37,10 +37,13 @@ import {
   Menu,
   MoveUpRight,
   FileCheck2,
+  HelpCircle,
   ShieldCheck,
   TriangleAlert,
   UploadCloud,
   UserRound,
+  MessageCircle,
+  Trophy,
   Wallet,
   X,
 } from "lucide-react";
@@ -682,7 +685,7 @@ function ReviewPortal() {
   );
 }
 
-type PortalTab = "dashboard" | "profile" | "kyc";
+type PortalTab = "dashboard" | "community" | "profile" | "kyc";
 
 function MemberRail({
   tab,
@@ -707,6 +710,7 @@ function MemberRail({
       </div>
       <nav className="mt-6 space-y-2" aria-label="Member navigation">
         <button type="button" onClick={() => setTab("dashboard")} className={`member-rail-link ${tab === "dashboard" ? "is-active" : ""}`}><LayoutDashboard size={16} /> Dashboard</button>
+        <button type="button" onClick={() => setTab("community")} className={`member-rail-link ${tab === "community" ? "is-active" : ""}`}><MessageCircle size={16} /> Community</button>
         <button type="button" onClick={() => setTab("profile")} className={`member-rail-link ${tab === "profile" ? "is-active" : ""}`}><UserRound size={16} /> Profile</button>
         <button type="button" onClick={() => setTab("kyc")} className={`member-rail-link ${tab === "kyc" ? "is-active" : ""}`}><FileCheck2 size={16} /> KYC & security</button>
       </nav>
@@ -743,6 +747,37 @@ function KycPanel() {
         <p className="mt-4 text-sm leading-6 text-[#c9dfcb]">Email verification protects access to your account. Payment proof is only available inside an authenticated order flow.</p>
       </div>
       <div className="mt-4 border border-[#eee9de]/15 p-6 text-sm leading-6 text-sand">No identity document is requested on this screen. A review request, when needed, will appear here with a clear explanation before anything is submitted.</div>
+    </section>
+  );
+}
+
+function CommunityPanel() {
+  const [section, setSection] = useState<"achievements" | "questions" | "ask">("achievements");
+  const sections = [
+    { id: "achievements" as const, label: "Achievements", icon: Trophy },
+    { id: "questions" as const, label: "Questions & concerns", icon: HelpCircle },
+    { id: "ask" as const, label: "Ask Forex Gobler", icon: MessageCircle },
+  ];
+  return (
+    <section className="portal-panel max-w-[900px]">
+      <div className="flex flex-wrap items-end justify-between gap-5">
+        <div>
+          <div className="mono text-[10px] uppercase tracking-[.2em] text-gold">Member room</div>
+          <h1 className="display mt-6 text-5xl leading-[.9] tracking-[-.06em] text-paper">THE COMMONS.</h1>
+          <p className="mt-5 max-w-[560px] text-sm leading-7 text-sand">A private place to share real progress, ask better questions, and learn without performing for the algorithm.</p>
+        </div>
+        <div className="community-presence"><span className="presence-dot" /> Live presence will reflect verified members</div>
+      </div>
+      <div className="mt-10 grid gap-2 border-b border-[#eee9de]/10 pb-3 sm:grid-cols-3">
+        {sections.map(({ id, label, icon: Icon }) => (
+          <button key={id} type="button" onClick={() => setSection(id)} className={`community-tab ${section === id ? "is-active" : ""}`}><Icon size={15} /> {label}</button>
+        ))}
+      </div>
+      <div className="community-empty mt-8">
+        {section === "achievements" && <><Trophy size={26} className="text-gold" /><h2 className="display mt-5 text-3xl text-paper">Your wins belong here.</h2><p className="mt-3 max-w-[460px] text-sm leading-6 text-sand">Verified member achievements will appear here after members choose to share them. No invented profiles. No manufactured hype.</p><button type="button" className="gold-button mt-7 px-5 py-3 mono text-[10px] uppercase tracking-[.12em]">Share a real achievement</button></>}
+        {section === "questions" && <><HelpCircle size={26} className="text-gold" /><h2 className="display mt-5 text-3xl text-paper">Ask without the noise.</h2><p className="mt-3 max-w-[460px] text-sm leading-6 text-sand">Questions and concerns will be visible to the community when the discussion service is connected. Start with a specific problem, not a performance.</p><button type="button" className="gold-button mt-7 px-5 py-3 mono text-[10px] uppercase tracking-[.12em]">Post a question</button></>}
+        {section === "ask" && <><MessageCircle size={26} className="text-gold" /><h2 className="display mt-5 text-3xl text-paper">Ask Forex Gobler.</h2><p className="mt-3 max-w-[460px] text-sm leading-6 text-sand">Bring the decision you are stuck on. A real response will replace the dopamine loop of chasing another signal.</p><button type="button" className="gold-button mt-7 px-5 py-3 mono text-[10px] uppercase tracking-[.12em]">Start a private question</button></>}
+      </div>
     </section>
   );
 }
@@ -883,7 +918,7 @@ function UserPortal() {
       <div className="member-layout mx-auto max-w-[1440px] lg:grid lg:grid-cols-[240px_1fr]">
         <MemberRail tab={portalTab} setTab={setPortalTab} user={user} signOut={handleSignOut} />
       <main className="mx-auto w-full max-w-[1200px] px-5 py-16 md:px-10 md:py-24">
-        {portalTab === "profile" ? <ProfilePanel user={user} /> : portalTab === "kyc" ? <KycPanel /> : <>
+        {portalTab === "community" ? <CommunityPanel /> : portalTab === "profile" ? <ProfilePanel user={user} /> : portalTab === "kyc" ? <KycPanel /> : <>
         <div className="reveal">
           <div className="mono text-[10px] uppercase tracking-[.2em] text-gold">Member portal / Forex Gobler</div>
           <h1 className="display mt-7 max-w-[880px] text-[clamp(56px,8vw,116px)] font-semibold leading-[.84] tracking-[-.08em] text-paper">
