@@ -45,7 +45,6 @@ import {
   UploadCloud,
   UserRound,
   MessageCircle,
-  Trophy,
   Wallet,
   X,
 } from "lucide-react";
@@ -803,11 +802,10 @@ function KycPanel() {
 }
 
 function CommunityPanel() {
-  const [section, setSection] = useState<"achievements" | "questions" | "ask">("achievements");
+  const [section, setSection] = useState<"support" | "questions">("support");
   const sections = [
-    { id: "achievements" as const, label: "Achievements", icon: Trophy },
-    { id: "questions" as const, label: "Questions & concerns", icon: HelpCircle },
-    { id: "ask" as const, label: "Ask Forex Gobler", icon: MessageCircle },
+    { id: "support" as const, label: "Support", icon: MessageCircle },
+    { id: "questions" as const, label: "Questions / Ask", icon: HelpCircle },
   ];
   return (
     <section className="portal-panel max-w-[900px]">
@@ -819,15 +817,14 @@ function CommunityPanel() {
         </div>
         <div className="community-presence"><span className="presence-dot" /> Live presence will reflect verified members</div>
       </div>
-      <div className="mt-10 grid gap-2 border-b border-[#eee9de]/10 pb-3 sm:grid-cols-3">
+      <div className="mt-10 grid max-w-[620px] gap-2 border-b border-[#eee9de]/10 pb-3 sm:grid-cols-2">
         {sections.map(({ id, label, icon: Icon }) => (
           <button key={id} type="button" onClick={() => setSection(id)} className={`community-tab ${section === id ? "is-active" : ""}`}><Icon size={15} /> {label}</button>
         ))}
       </div>
       <div className="community-empty mt-8">
-        {section === "achievements" && <><Trophy size={26} className="text-gold" /><h2 className="display mt-5 text-3xl text-paper">Your wins belong here.</h2><p className="mt-3 max-w-[460px] text-sm leading-6 text-sand">Verified member achievements will appear here after members choose to share them. No invented profiles. No manufactured hype.</p><button type="button" className="gold-button mt-7 px-5 py-3 mono text-[10px] uppercase tracking-[.12em]">Share a real achievement</button></>}
-        {section === "questions" && <><HelpCircle size={26} className="text-gold" /><h2 className="display mt-5 text-3xl text-paper">Ask without the noise.</h2><p className="mt-3 max-w-[460px] text-sm leading-6 text-sand">Questions and concerns will be visible to the community when the discussion service is connected. Start with a specific problem, not a performance.</p><button type="button" className="gold-button mt-7 px-5 py-3 mono text-[10px] uppercase tracking-[.12em]">Post a question</button></>}
-        {section === "ask" && <><MessageCircle size={26} className="text-gold" /><h2 className="display mt-5 text-3xl text-paper">Ask Forex Gobler.</h2><p className="mt-3 max-w-[460px] text-sm leading-6 text-sand">Bring the decision you are stuck on. A real response will replace the dopamine loop of chasing another signal.</p><button type="button" className="gold-button mt-7 px-5 py-3 mono text-[10px] uppercase tracking-[.12em]">Start a private question</button></>}
+        {section === "support" && <><MessageCircle size={26} className="text-gold" /><h2 className="display mt-5 text-3xl text-paper">Support is close.</h2><p className="mt-3 max-w-[460px] text-sm leading-6 text-sand">Need help with your account, payment proof, or delivery? Contact the Forex Gobler support desk directly.</p><a href="mailto:supportxauusdgobler@gmail.com" className="gold-button mt-7 inline-flex px-5 py-3 mono text-[10px] uppercase tracking-[.12em]">Email support</a><div className="mt-4 mono text-[10px] text-sand">supportxauusdgobler@gmail.com</div></>}
+        {section === "questions" && <><HelpCircle size={26} className="text-gold" /><h2 className="display mt-5 text-3xl text-paper">Questions / Ask Forex Gobler.</h2><p className="mt-3 max-w-[460px] text-sm leading-6 text-sand">Bring your question or concern. For private help, email the support desk and include your account email plus order number.</p><a href="mailto:supportxauusdgobler@gmail.com?subject=Forex%20Gobler%20question" className="gold-button mt-7 inline-flex px-5 py-3 mono text-[10px] uppercase tracking-[.12em]">Ask support</a></>}
       </div>
     </section>
   );

@@ -25,6 +25,10 @@ Run the frontend with `PORT=5174 pnpm --filter @workspace/obsidian-members-club 
 
 The frontend uses `/api` for the generated client. In a deployed Replit application, configure the frontend and API under the same application/router so Clerk cookies and API requests share the host.
 
+### Deploy from VS Code
+
+Use a Node/PostgreSQL host such as Render, Railway, Fly.io, or a VPS. Deploy the API as a Node service with `pnpm --filter @workspace/api-server build` followed by `pnpm --filter @workspace/api-server start`, and deploy the frontend as a Vite static site with `pnpm --filter @workspace/obsidian-members-club build` serving `artifacts/obsidian-members-club/dist/public`. Set `DATABASE_URL`, Clerk keys, object-storage values, `ADMIN_USER_IDS`, and the email variables in the host's secret manager. Route `/api/*` to the API service and the remaining paths to the frontend; then point `forexgobler.com` or `forexgobler.net` DNS to that host and enable HTTPS.
+
 ### Custom domain: forexgobler.net
 
 1. Deploy the Replit application and confirm the generated Replit URL works first.

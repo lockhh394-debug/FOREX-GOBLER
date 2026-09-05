@@ -38,13 +38,16 @@ export async function sendLicenseEmail(input: {
 }): Promise<void> {
   const from =
     process.env.RESEND_FROM_EMAIL ??
-    "Obsidian Members Club <onboarding@resend.dev>";
+    "Forex Gobler <onboarding@resend.dev>";
+  const replyTo =
+    process.env.REPLY_TO_EMAIL ?? "supportxauusdgobler@gmail.com";
   const connectors = new ReplitConnectors();
   const response = await connectors.proxy("resend", "/emails", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
       from,
+      reply_to: replyTo,
       to: [input.customerEmail],
       subject: `Your Forex Gobler license — ${input.productName}`,
       html: `
