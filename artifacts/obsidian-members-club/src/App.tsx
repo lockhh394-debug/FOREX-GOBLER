@@ -960,9 +960,9 @@ function UserPortal() {
         </div>
       </header>
 
-      <div className={`member-layout ${railCollapsed ? "rail-collapsed" : ""} mx-auto max-w-[1440px]`}>
+      <div className={`member-layout ${railCollapsed ? "rail-collapsed" : ""}`}>
         <MemberRail tab={portalTab} setTab={setPortalTab} user={user} signOut={handleSignOut} collapsed={railCollapsed} setCollapsed={setRailCollapsed} />
-      <main className="portal-main mx-auto w-full max-w-[1200px] px-5 py-16 md:px-10 md:py-24">
+      <main className="portal-main w-full px-5 py-10 md:px-12 md:py-14 xl:px-16">
         {portalTab === "community" ? <CommunityPanel /> : portalTab === "profile" ? <ProfilePanel user={user} /> : portalTab === "kyc" ? <KycPanel /> : <>
         <div className="portal-hero">
           <div className="mono text-[10px] uppercase tracking-[.2em] text-gold">Dashboard / Forex Gobler</div>
