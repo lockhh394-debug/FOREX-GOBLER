@@ -59,6 +59,39 @@ const clerkPubKey = publishableKeyFromHost(
 const clerkProxyUrl = import.meta.env.VITE_CLERK_PROXY_URL;
 const RECEIVING_ADDRESS = "TD2NkgvoYBucfcas6gDQYq5ZdGWUNbnUcU";
 
+const FALLBACK_PRODUCTS: Product[] = [
+  {
+    slug: "basic-mt5-bot",
+    name: "Basic MT5 Bot",
+    priceCents: 5000,
+    currency: "USD",
+    paymentNetwork: "USDT-TRC20",
+    tagline: "The foundation",
+    description: "The five core strategies with full control in your hands. You decide when to trade, when to set stop loss, and when to take profit.",
+    features: ["Five core strategies", "Full control when you trade", "MT5-ready setup", "Private delivery instructions"],
+  },
+  {
+    slug: "prop-firm-ea-bot",
+    name: "Prop Firm EA Bot",
+    priceCents: 25000,
+    currency: "USD",
+    paymentNetwork: "USDT-TRC20",
+    tagline: "The evaluation system",
+    description: "The same five core strategies with strict prop-firm rules and built-in risk-management controls for account evaluations.",
+    features: ["Five core strategies", "Strict prop-firm rules", "Built-in risk management", "Evaluation-ready controls"],
+  },
+  {
+    slug: "premium-ea-bot",
+    name: "Premium EA Bot",
+    priceCents: 20000,
+    currency: "USD",
+    paymentNetwork: "USDT-TRC20",
+    tagline: "The complete system",
+    description: "Eight strategies total, built-in stop loss and take profit, high-impact news filtering, and session selection to help reduce avoidable liquidation risk.",
+    features: ["Eight total strategies", "Stop loss and take profit", "News filtering", "Session selection"],
+  },
+];
+
 if (!clerkPubKey) {
   throw new Error("Missing VITE_CLERK_PUBLISHABLE_KEY in .env file");
 }
@@ -813,6 +846,7 @@ function UserPortal() {
     [ordersQuery.data],
   );
   const orders = Array.isArray(ordersQuery.data) ? ordersQuery.data : [];
+  const visibleProducts = products.length > 0 ? products : FALLBACK_PRODUCTS;
 
   useEffect(() => {
     if (existingPendingOrder && !activeOrder && step === "catalog") {
@@ -838,7 +872,7 @@ function UserPortal() {
       setActiveOrder(order);
       setStep("payment");
     } catch {
-      setError("We could not start that order. Please try again.");
+      setError("The bot catalog is visible, but checkout is offline. Start the API and database, then try again.");
     } finally {
       setBusy(false);
     }
@@ -952,7 +986,7 @@ function UserPortal() {
               <div className="flex items-center gap-3 py-16 text-sm text-sand"><Loader2 className="animate-spin text-gold" /> Loading systems...</div>
             ) : (
               <div className="grid gap-4 lg:grid-cols-3">
-                {products.map((product) => (
+                {visibleProducts.map((product) => (
                   <ProductCard key={product.slug} product={product} onChoose={chooseProduct} busy={busy} />
                 ))}
               </div>
