@@ -11,6 +11,20 @@ An immersive, high-conviction landing experience for a private digital members c
 - `pnpm --filter @workspace/db run push` — push DB schema changes (dev only)
 - Required env: `DATABASE_URL` — Postgres connection string
 
+### First-time setup
+
+1. Copy `.env.example` to `.env` and fill in the Clerk, Postgres, reviewer, and object-storage values. Never commit `.env`.
+2. Provision PostgreSQL, then run `pnpm --filter @workspace/db run push` to create the `orders` and `payment_submissions` tables.
+3. Create public and private Replit Object Storage paths and set `PUBLIC_OBJECT_SEARCH_PATHS` and `PRIVATE_OBJECT_DIR`.
+4. Add the reviewer Clerk user ID to `ADMIN_USER_IDS`.
+5. Run `pnpm run typecheck && pnpm run build` before deploying.
+
+### Local development
+
+Run the frontend with `PORT=5174 pnpm --filter @workspace/obsidian-members-club run dev` and the API with `PORT=5000 pnpm --filter @workspace/api-server run dev`.
+
+The frontend uses `/api` for the generated client. In a deployed Replit application, configure the frontend and API under the same application/router so Clerk cookies and API requests share the host.
+
 ## Stack
 
 - pnpm workspaces, Node.js 24, TypeScript 5.9
