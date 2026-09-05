@@ -809,9 +809,10 @@ function UserPortal() {
   const [portalTab, setPortalTab] = useState<PortalTab>("dashboard");
 
   const existingPendingOrder = useMemo(
-    () => ordersQuery.data?.find((order) => order.status === "payment_verification_pending"),
+    () => (Array.isArray(ordersQuery.data) ? ordersQuery.data : []).find((order) => order.status === "payment_verification_pending"),
     [ordersQuery.data],
   );
+  const orders = Array.isArray(ordersQuery.data) ? ordersQuery.data : [];
 
   useEffect(() => {
     if (existingPendingOrder && !activeOrder && step === "catalog") {
@@ -1023,7 +1024,7 @@ function UserPortal() {
 
         <section className="mt-24 border-t border-[#eee9de]/15 pt-10">
           <div className="mb-6 flex items-center gap-3 mono text-[10px] uppercase tracking-[.18em] text-gold"><Clock3 size={15} /> Your order trail</div>
-          {ordersQuery.isLoading ? <div className="text-sm text-sand">Loading your orders...</div> : <OrdersList orders={ordersQuery.data ?? []} />}
+          {ordersQuery.isLoading ? <div className="text-sm text-sand">Loading your orders...</div> : ordersQuery.isError || (ordersQuery.data !== undefined && !Array.isArray(ordersQuery.data)) ? <div className="border border-[#e0715c]/50 bg-[#35221f] p-6 text-sm leading-6 text-paper">The member API is unavailable. Start the API server on port 5000, then refresh this page.</div> : <OrdersList orders={orders} />}
         </section>
         </>}
       </main>
