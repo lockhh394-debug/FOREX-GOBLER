@@ -1,0 +1,60 @@
+# Obsidian Members Club
+
+An immersive, high-conviction landing experience for a private digital members club focused on wealth, leverage, and daily execution.
+
+## Run & Operate
+
+- `pnpm --filter @workspace/api-server run dev` — run the API server (port 5000)
+- `pnpm run typecheck` — full typecheck across all packages
+- `pnpm run build` — typecheck + build all packages
+- `pnpm --filter @workspace/api-spec run codegen` — regenerate API hooks and Zod schemas from the OpenAPI spec
+- `pnpm --filter @workspace/db run push` — push DB schema changes (dev only)
+- Required env: `DATABASE_URL` — Postgres connection string
+
+## Stack
+
+- pnpm workspaces, Node.js 24, TypeScript 5.9
+- API: Express 5
+- DB: PostgreSQL + Drizzle ORM
+- Validation: Zod (`zod/v4`), `drizzle-zod`
+- API codegen: Orval (from OpenAPI spec)
+- Build: esbuild (CJS bundle)
+
+## Where things live
+
+- `artifacts/obsidian-members-club/src/App.tsx` — marketing experience plus Clerk auth routes, member dashboard, product selection, crypto payment, proof upload, and order status UI.
+- `artifacts/obsidian-members-club/src/index.css` — visual system, responsive layout, motion, and accessibility preferences.
+- `artifacts/api-server/` — Clerk-protected catalogue, order, payment-proof, and object-storage routes.
+- `lib/api-spec/openapi.yaml` — current API contract source of truth.
+
+## Architecture decisions
+
+- The interface uses an original Obsidian identity rather than copying any reference site's logos, marks, or protected content.
+- Motion is progressive and respects `prefers-reduced-motion` so the immersive feel does not compromise accessibility.
+- Clerk manages persistent registration/login and the Google sign-in option; signed-in users are routed to `/user-portal`.
+- The purchase path is: choose a Forex Gobler EA → pay using USDT-TRC20 → upload a payment screenshot → wait for verification → receive a unique license and bot delivery instructions by email.
+- Delivery is communicated as 3–5 business days after successful payment verification. No guaranteed trading-result claims are used.
+
+## Product
+
+- Scroll-led landing experience for the Obsidian Members Club.
+- Smooth anchor navigation with responsive mobile menu.
+- Persistent Clerk registration/login with Google sign-in available through the managed auth configuration.
+- Member dashboard with Basic MT5 Bot ($50), Prop Firm EA Bot ($250), and Premium EA Bot ($200).
+- USDT-TRC20 payment instructions, screenshot proof upload through private object storage, pending payment-review state, and per-user order history.
+- Expandable FAQ and conversion CTAs throughout the page.
+
+## User preferences
+
+- The user wants an engaging, obsessive, high-conviction feel inspired by bold creator-led membership sites.
+
+## Gotchas
+
+- The web artifact workflow supplies `PORT` and `BASE_PATH`; local production builds need those values set explicitly.
+- Private proof objects must remain owner-scoped through the order/payment-submission relationship.
+- Reviewer verification routes require the customer's Clerk user ID to be listed in the `ADMIN_USER_IDS` environment variable.
+- `RESEND_FROM_EMAIL` can be set to a verified Resend sender; the development fallback is Resend's onboarding sender.
+
+## Pointers
+
+- See the `pnpm-workspace` skill for workspace structure, TypeScript setup, and package details

@@ -1,0 +1,16 @@
+uploads = []
+generated = []
+
+[[outputs]]
+id = "_hWomhw2MveI-fLuJBUgV"
+uri = "file://exports/obsidian-members-club-export.zip"
+type = "unspecified"
+title = "Obsidian Members Club export ZIP"
+description = "Complete source/UI/API/configuration export with compiled outputs, development PostgreSQL data, deployment status, and an explicit manifest of unavailable production/APK/external-account data. Secrets and tokens are excluded."
+logical_id = "afb2df37-6cf0-4a72-852e-e2eb71fe1ea2"
+content_hash = "sha256:7da1b9fc4ee5c57d9c92024e4a8242c3155cc386601e65726ff10f07104f2ffc"
+size = 2473431
+mtime_ms = 1788520587723
+storage_uri = "gcs://replit-rams-assets-janeway/rams/assets/repl:2ff4b8c6-53c5-42b4-85d6-f981e08ecd34/afb2df37-6cf0-4a72-852e-e2eb71fe1ea2/51fd431c-833e-4e5d-9f41-1be26aee9c0d"
+storage_version_token = "1788520602857812"
+content_type = "application/octet-stream"
