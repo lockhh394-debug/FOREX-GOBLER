@@ -921,17 +921,23 @@ function UserPortal() {
       <main className="mx-auto w-full max-w-[1200px] px-5 py-16 md:px-10 md:py-24">
         {portalTab === "community" ? <CommunityPanel /> : portalTab === "profile" ? <ProfilePanel user={user} /> : portalTab === "kyc" ? <KycPanel /> : <>
         <div className="reveal">
-          <div className="mono text-[10px] uppercase tracking-[.2em] text-gold">Member portal / Forex Gobler</div>
+          <div className="mono text-[10px] uppercase tracking-[.2em] text-gold">Dashboard / Forex Gobler</div>
           <h1 className="display mt-7 max-w-[880px] text-[clamp(56px,8vw,116px)] font-semibold leading-[.84] tracking-[-.08em] text-paper">
-            CHOOSE YOUR
+            YOUR MEMBER
             <br />
-            <span className="text-gold">SYSTEM.</span>
+            <span className="text-gold">DASHBOARD.</span>
           </h1>
           <p className="mt-8 max-w-[510px] text-base leading-7 text-sand">
             Three levels of control. One private order trail. Choose the EA,
             complete the USDT-TRC20 payment, and attach your proof. Payment
             tools appear only after your account is authenticated.
           </p>
+        </div>
+
+        <div className="dashboard-strip mt-12 grid gap-px border border-[#eee9de]/15 bg-[#eee9de]/15 sm:grid-cols-3">
+          <div className="dashboard-stat"><span>Account</span><strong>Authenticated</strong></div>
+          <div className="dashboard-stat"><span>Community</span><strong>Private member room</strong></div>
+          <div className="dashboard-stat"><span>Payment access</span><strong>Available after sign-in</strong></div>
         </div>
 
         {error && (

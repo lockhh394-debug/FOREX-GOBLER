@@ -191,6 +191,10 @@ section {
 .community-tab { display: flex; align-items: center; justify-content: center; gap: .55rem; border: 1px solid transparent; padding: .8rem .65rem; color: var(--sand); font-family: var(--app-font-mono); font-size: 9px; letter-spacing: .06em; text-transform: uppercase; }
 .community-tab:hover, .community-tab.is-active { border-color: rgba(239,184,79,.35); background: rgba(239,184,79,.08); color: var(--gold); }
 .community-empty { min-height: 300px; border: 1px dashed rgba(238,233,222,.2); padding: 2.5rem; }
+.dashboard-strip { max-width: 900px; }
+.dashboard-stat { display: flex; min-height: 82px; flex-direction: column; justify-content: center; gap: .45rem; background: rgba(33,29,24,.72); padding: 1rem 1.2rem; }
+.dashboard-stat span { color: var(--sand); font-family: var(--app-font-mono); font-size: 9px; letter-spacing: .14em; text-transform: uppercase; }
+.dashboard-stat strong { color: var(--paper); font-size: .9rem; font-weight: 500; }
 
 @media (min-width: 1024px) {
   .member-rail { min-height: calc(100dvh - 72px); }
