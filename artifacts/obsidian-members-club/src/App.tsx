@@ -1051,7 +1051,7 @@ function SignInPage() {
       <div className="auth-frame">
         <div className="auth-brand display">FOREX<span className="text-gold">/</span>GOBLER</div>
         <div className="auth-private-note">Private member access. Verification codes are used only to protect your account.</div>
-        <SignIn routing="path" path={`${basePath}/sign-in`} signUpUrl={`${basePath}/sign-up`} />
+        <SignIn routing="path" path={`${basePath}/sign-in`} signUpUrl={`${basePath}/sign-up`} forceRedirectUrl={`${basePath}/user-portal`} />
       </div>
     </div>
   );
@@ -1063,7 +1063,7 @@ function SignUpPage() {
       <div className="auth-frame">
         <div className="auth-brand display">FOREX<span className="text-gold">/</span>GOBLER</div>
         <div className="auth-private-note">Create your private member account. Payment tools unlock only after sign-in.</div>
-        <SignUp routing="path" path={`${basePath}/sign-up`} signInUrl={`${basePath}/sign-in`} />
+        <SignUp routing="path" path={`${basePath}/sign-up`} signInUrl={`${basePath}/sign-in`} forceRedirectUrl={`${basePath}/user-portal`} />
       </div>
     </div>
   );
