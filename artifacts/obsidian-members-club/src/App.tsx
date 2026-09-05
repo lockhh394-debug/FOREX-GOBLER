@@ -29,6 +29,8 @@ import {
   Check,
   CheckCircle2,
   ChevronDown,
+  ChevronLeft,
+  ChevronRight,
   Clock3,
   Copy,
   Loader2,
@@ -725,30 +727,37 @@ function MemberRail({
   setTab,
   user,
   signOut,
+  collapsed,
+  setCollapsed,
 }: {
   tab: PortalTab;
   setTab: (tab: PortalTab) => void;
   user: ReturnType<typeof useUser>["user"];
   signOut: () => void;
+  collapsed: boolean;
+  setCollapsed: (collapsed: boolean) => void;
 }) {
   const initials = user?.firstName?.[0] ?? user?.primaryEmailAddress?.emailAddress?.[0] ?? "F";
   return (
-    <aside className="member-rail border-r border-[#eee9de]/10 bg-[#211d18] p-5 lg:sticky lg:top-[72px] lg:h-[calc(100dvh-72px)]">
-      <div className="flex items-center gap-3 border-b border-[#eee9de]/10 pb-5">
+    <aside className={`member-rail ${collapsed ? "is-collapsed" : ""} border-r border-[#eee9de]/10 bg-[#211d18] p-5 lg:sticky lg:top-[72px] lg:h-[calc(100dvh-72px)]`}>
+      <div className="flex items-center justify-between gap-3 border-b border-[#eee9de]/10 pb-5">
+        <div className="flex min-w-0 items-center gap-3">
         <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[#d6a447] font-bold text-[#171411]">{initials.toUpperCase()}</div>
-        <div className="min-w-0">
+        <div className="member-rail-copy min-w-0">
           <div className="truncate text-sm text-paper">{user?.firstName || "Forex member"}</div>
           <div className="truncate text-[11px] text-sand">{user?.primaryEmailAddress?.emailAddress || "Private account"}</div>
         </div>
+        </div>
+        <button type="button" onClick={() => setCollapsed(!collapsed)} className="member-rail-toggle" aria-label={collapsed ? "Open member navigation" : "Collapse member navigation"}>{collapsed ? <ChevronRight size={16} /> : <ChevronLeft size={16} />}</button>
       </div>
       <nav className="mt-6 space-y-2" aria-label="Member navigation">
-        <button type="button" onClick={() => setTab("dashboard")} className={`member-rail-link ${tab === "dashboard" ? "is-active" : ""}`}><LayoutDashboard size={16} /> Dashboard</button>
-        <button type="button" onClick={() => setTab("community")} className={`member-rail-link ${tab === "community" ? "is-active" : ""}`}><MessageCircle size={16} /> Community</button>
-        <button type="button" onClick={() => setTab("profile")} className={`member-rail-link ${tab === "profile" ? "is-active" : ""}`}><UserRound size={16} /> Profile</button>
-        <button type="button" onClick={() => setTab("kyc")} className={`member-rail-link ${tab === "kyc" ? "is-active" : ""}`}><FileCheck2 size={16} /> KYC & security</button>
+        <button type="button" onClick={() => setTab("dashboard")} className={`member-rail-link ${tab === "dashboard" ? "is-active" : ""}`}><LayoutDashboard size={16} /><span>Dashboard</span></button>
+        <button type="button" onClick={() => setTab("community")} className={`member-rail-link ${tab === "community" ? "is-active" : ""}`}><MessageCircle size={16} /><span>Community</span></button>
+        <button type="button" onClick={() => setTab("profile")} className={`member-rail-link ${tab === "profile" ? "is-active" : ""}`}><UserRound size={16} /><span>Profile</span></button>
+        <button type="button" onClick={() => setTab("kyc")} className={`member-rail-link ${tab === "kyc" ? "is-active" : ""}`}><FileCheck2 size={16} /><span>KYC & security</span></button>
       </nav>
       <div className="mt-auto hidden border-t border-[#eee9de]/10 pt-5 lg:block">
-        <button type="button" onClick={signOut} className="member-rail-link"><LogOut size={16} /> Sign out</button>
+        <button type="button" onClick={signOut} className="member-rail-link"><LogOut size={16} /><span>Sign out</span></button>
       </div>
     </aside>
   );
@@ -840,6 +849,7 @@ function UserPortal() {
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
   const [portalTab, setPortalTab] = useState<PortalTab>("dashboard");
+  const [railCollapsed, setRailCollapsed] = useState(false);
 
   const existingPendingOrder = useMemo(
     () => (Array.isArray(ordersQuery.data) ? ordersQuery.data : []).find((order) => order.status === "payment_verification_pending"),
@@ -950,8 +960,8 @@ function UserPortal() {
         </div>
       </header>
 
-      <div className="member-layout mx-auto max-w-[1440px] lg:grid lg:grid-cols-[240px_1fr]">
-        <MemberRail tab={portalTab} setTab={setPortalTab} user={user} signOut={handleSignOut} />
+      <div className={`member-layout ${railCollapsed ? "rail-collapsed" : ""} mx-auto max-w-[1440px]`}>
+        <MemberRail tab={portalTab} setTab={setPortalTab} user={user} signOut={handleSignOut} collapsed={railCollapsed} setCollapsed={setRailCollapsed} />
       <main className="mx-auto w-full max-w-[1200px] px-5 py-16 md:px-10 md:py-24">
         {portalTab === "community" ? <CommunityPanel /> : portalTab === "profile" ? <ProfilePanel user={user} /> : portalTab === "kyc" ? <KycPanel /> : <>
         <div className="reveal">
@@ -985,7 +995,7 @@ function UserPortal() {
             {productsLoading ? (
               <div className="flex items-center gap-3 py-16 text-sm text-sand"><Loader2 className="animate-spin text-gold" /> Loading systems...</div>
             ) : (
-              <div className="grid gap-4 lg:grid-cols-3">
+              <div className="bot-catalog grid gap-4">
                 {visibleProducts.map((product) => (
                   <ProductCard key={product.slug} product={product} onChoose={chooseProduct} busy={busy} />
                 ))}
